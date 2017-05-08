@@ -45,32 +45,31 @@ public class Main {
 
                 System.out.println("lexema -> '" + lexema + "'");
 
-                if (c == 10) {
-                    System.out.println("tk_quebralinha");
-                    lexema = "";
-                }
-                else
-                if (lexema.equals("escreva ")) {
-                    System.out.println("tk_escreva encontrado");
-                    lexema = "";
-                }
-                else
-                if (lexema.equals("leia ")) {
-                    System.out.println("tk_leia encontrado");
-                    lexema = "";
+                if (c == 10 || c == ' ') {
+                    //System.out.println("tk_quebralinha");
+                    lexema = lexema.substring(0, lexema.length() - 1);
+                    //outputStream.write("\n");
 
-                }
-                else
-                if (lexema.matches("\".*\"")) {
-                    System.out.println("tk_texto encontrado");
-                    lexema = "";
-                }
-                else
-                if (lexema.matches("[a-z]* "))  {
-                    System.out.println("tk_variavel encontrado");
-                    lexema = "";
-                }
 
+                    if (lexema.equals("escreva")) {
+                        System.out.println("tk_escreva encontrado");
+                        lexema = "";
+                        outputStream.write("tk_escreva ");
+                    } else if (lexema.equals("leia")) {
+                        System.out.println("tk_leia encontrado");
+                        lexema = "";
+                        outputStream.write("tk_leia ");
+
+                    } else if (lexema.matches("\".*\"")) {
+                        System.out.println("tk_texto encontrado");
+                        lexema = "";
+                        outputStream.write("tk_texto ");
+                    } else if (lexema.matches("[a-z][a-z0-9]*")) {
+                        System.out.println("tk_variavel encontrado");
+                        lexema = "";
+                        outputStream.write("tk_variavel ");
+                    }
+                }
 
 
 //                switch (lexema) {
