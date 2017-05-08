@@ -1,0 +1,3 @@
+escreva "texto"
+leia variavel
+fim
