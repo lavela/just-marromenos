@@ -6,149 +6,188 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
+
+    public static void gravarVariavel(String nomeVariavel, String conteudoVariavel) {
+
+
+
+    }
+
+    // para verificar o ultimo lexema do arquivo de texto
+    public static String lexemaExiste(String lexema) {
+
+        String token = "";
+
+        if (lexema.equals("escreva")) {
+            System.out.println("tk_escreva encontrado");
+            lexema = "";
+            token = "tk_escreva";
+        } else if (lexema.equals("leia")) {
+            System.out.println("tk_leia encontrado");
+            lexema = "";
+            token = "tk_leia";
+        } else if (lexema.matches("inicio")) {
+            System.out.println("tk_inicio encontrado");
+            lexema = "";
+            token = "tk_inicio";
+        } else if (lexema.matches("fim")) {
+            System.out.println("tk_fim encontrado");
+            lexema = "";
+            token = "tk_fim";
+        } else if (lexema.matches("se")) {
+            System.out.printf("tk_se encontrado");
+            lexema = "";
+            token = "tk_se";
+        } else if (lexema.matches("fimse")) {
+            System.out.println("tk_fimse encontrado");
+            lexema = "";
+            token = "tk_fimse ";
+        } else if (lexema.matches("\".*\"")) {
+            System.out.println("tk_texto encontrado");
+            lexema = "";
+            token = "tk_texto ";
+        } else if (lexema.matches("[a-z][a-z0-9]*")) {
+            System.out.println("tk_id encontrado");
+            lexema = "";
+            token = "tk_id";
+        } else if (lexema.matches("[0-9]+(,[0-9]+)?")) {
+            System.out.println("tk_numero encontrado");
+            lexema = "";
+            token = "tk_numero";
+        } else if (lexema.matches("\\+|\\-|\\*|/")) {
+            System.out.println("tk_operador encontrado");
+            lexema = "";
+            token = "tk_operador";
+        } else if (lexema.matches("=")) {
+            System.out.println("tk_atribuicao encontrado");
+            lexema = "";
+            token = "tk_atribuicao";
+        } else if (lexema.matches(">|<|>=|<=|==|!=")) {
+            System.out.println("tk_relop encontrado");
+            lexema = "";
+            token = "tk_relop ";
+
+        }
+
+        return token;
+
+    }
+
     public static void main(String[] args) throws IOException {
 
         FileReader inputStream = null;
         FileWriter outputStream = null;
 
+        HashMap tabelaSimbolos = new HashMap();
+
+
+
+
         try {
+            // arquivo a ser lido
             inputStream = new FileReader("entrada.txt");
+            // arquivo em que serão colocados os tokens
             outputStream = new FileWriter("saida.txt");
 
+            //inicializa string
             String lexema = "";
 
-//            String pattern = "escreva ";
-//            Pattern tk_escreva = Pattern.compile(pattern);
-//
-//            String tk_texto_pattern = "\"[^\"]*\"";
-//            Pattern tk_texto = Pattern.compile(tk_texto_pattern);
-//
-//            Matcher m;
-
+            // valor da tabela ascii do caractere
             int c;
-            boolean stringOpen = false;
+
+            // vai indicar quando uma string for aberta, contornando o problema dos delimitadores
+            boolean abreString = false;
+
+
+            // enquanto quando o metodo alcanca o fim do stream ele retorna -1 e sai do loop
             while ((c = inputStream.read()) != -1) {
 
-//                outputStream.write(c);
-
-
+                // concactena os caracteres numa string até que nao tenha mais nenhum caractere
                 lexema += (char) c;
 
-                // decimal ascii
-//                System.out.println("caractere atual -> '" + c + "'");
-
-
+                // imprime o lexema no console
                 System.out.println("lexema -> '" + lexema + "'");
+//                System.out.println((char) c + " (" + c + ")");
 
+                // delimitadores, 10 = quebra de linha e espaco
+                // ao encontrar um desses dois caracteres, a condicao vai verificar o lexema, removendo o caractere
                 if (c == 10 || c == ' ') {
-                    //System.out.println("tk_quebralinha");
+                    // remove o ultimo caractere, que seria o delimitador, para depois comparar nos IFS
                     lexema = lexema.substring(0, lexema.length() - 1);
-                    //outputStream.write("\n");
 
 
+//                     verificar o que corresponde ao lexema encontrado
                     if (lexema.equals("escreva")) {
                         System.out.println("tk_escreva encontrado");
+                        //limpa a string, pra concatenar a partir de uma string vazia
                         lexema = "";
+                        // escreve no arquivo de saida.txt
                         outputStream.write("tk_escreva ");
                     } else if (lexema.equals("leia")) {
                         System.out.println("tk_leia encontrado");
                         lexema = "";
                         outputStream.write("tk_leia ");
-
+                    } else if (lexema.matches("inicio")) {
+                        System.out.println("tk_inicio encontrado");
+                        lexema = "";
+                        outputStream.write("tk_inicio ");
+                    } else if (lexema.matches("fim")) {
+                        System.out.println("tk_fim encontrado");
+                        lexema = "";
+                        outputStream.write("tk_fim");
+                    } else if (lexema.matches("se")) {
+                        System.out.printf("tk_se encontrado");
+                        lexema = "";
+                        outputStream.write("tk_se");
+                    } else if (lexema.matches("fimse")) {
+                        System.out.println("tk_fimse encontrado");
+                        lexema = "";
+                        outputStream.write("tk_fimse ");
                     } else if (lexema.matches("\".*\"")) {
                         System.out.println("tk_texto encontrado");
                         lexema = "";
                         outputStream.write("tk_texto ");
                     } else if (lexema.matches("[a-z][a-z0-9]*")) {
-                        System.out.println("tk_variavel encontrado");
+                        System.out.println("tk_id encontrado");
                         lexema = "";
-                        outputStream.write("tk_variavel ");
+                        outputStream.write("tk_id ");
+                    } else if (lexema.matches("[0-9]+(,[0-9]+)?")) {
+                        System.out.println("tk_numero encontrado");
+                        lexema = "";
+                        outputStream.write("tk_numero ");
+                    } else if (lexema.matches("\\+|\\-|\\*|/")) {
+                        System.out.println("tk_operador encontrado");
+                        lexema = "";
+                        outputStream.write("tk_operador ");
+                    } else if (lexema.matches("=")) {
+                        System.out.println("tk_atribuicao encontrado");
+                        lexema = "";
+                        outputStream.write("tk_atribuicao ");
+                    } else if (lexema.matches(">|<|>=|<=|==|!=")) {
+                        System.out.println("tk_relop encontrado");
+                        lexema = "";
+                        outputStream.write("tk_relop ");
+
                     }
                 }
 
+                // funcao que passa o lexema e verifica
 
-//                switch (lexema) {
-//
-//                    case "escreva":
-//                        outputStream.write("tk_escreva ");
-//                        System.out.println("token found");
-//                        lexema = "";
-//                        break;
-//                    case "leia":
-//                        outputStream.write("tk_leia ");
-//                        System.out.println("token found");
-//                        lexema = "";
-//                        break;
-//                    case "\n":
-//                        outputStream.write("\n");
-//                        lexema = "";
-//                        break;
-//                    case "\"":
-//                        stringOpen = !stringOpen;
-//                    default:
-//                        if (lexema.matches("\"[^\"]*\"")) {
-//                            System.out.println("token found");
-//                            outputStream.write("tk_texto ");
-//                            lexema = "";
-//                            break;
-//                        }
-//                        else
-//                        if (c == ' ' && stringOpen == false) {
-//                                System.out.println("found a space");
-//                                if (!lexema.matches("escreva|leia|\n|\"")) {
-//                                    System.out.println("token found");
-//                                    outputStream.write("tk_variavel");
-//                                }
-//                                lexema = "";
-//                                break;
-//                        }
-//
-//                }
+//                System.out.println("ultimo lexema: " + lexemaExiste(lexema));
 
-//                m = tk_escreva.matcher(lexema);
-//
-//                if (m.find()) {
-//                    System.out.println("\ntoken found " + m.group(0));
-//                    outputStream.write("tk_escreva ");
-//                    lexema = "";
-//                }
-
-//                if (lexema.equals("escreva ")) {
-//                    outputStream.write("tk_escreva ");
-//                    lexema = "";
-//                }
-
-
-//                if (lexema.equals("\"escre va\"")) {
-//                    System.out.println("\nfound token: tk_texto");
-//                    outputStream.write("tk_texto ");
-//                    lexema = "";
-//                }
-
-//                if (lexema.equals("\n")) {
-//                    System.out.println("linebreak found");
-//                    outputStream.write("\n");
-//                    lexema = "";
-//                }
-
-//                if (lexema.equals("leia ")) {
-//                    outputStream.write("tk_leia ");
-//                    lexema = "";
-//                }
-
-//                if (lexema.equals("variavel")) {
-//                    outputStream.write("tk_id ");
-//                    lexema = "";
-//
-//                }
 
 
             }
+
+            // escreve o ultimo lexema
+            outputStream.write(lexemaExiste(lexema));
+
         } finally {
             if (inputStream != null) {
                 inputStream.close();
@@ -158,4 +197,6 @@ public class Main {
             }
         }
     }
+
+
 }
