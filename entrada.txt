@@ -1,5 +1,10 @@
 inicio
 escreva "texto"
 variavel = 1 + 1
+se variavel > 1
+escreva "teste"
+fimse
+variavel2 = variavel
 leia variavel
+23aa
 fim

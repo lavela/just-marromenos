@@ -6,8 +6,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,6 +85,7 @@ public class Main {
 
         HashMap tabelaSimbolos = new HashMap();
 
+        ArrayList<String> listaDeSimbolos = new ArrayList<>();
 
 
 
@@ -103,6 +103,7 @@ public class Main {
 
             // vai indicar quando uma string for aberta, contornando o problema dos delimitadores
             boolean abreString = false;
+            int contadorLinha = 0;
 
 
             // enquanto quando o metodo alcanca o fim do stream ele retorna -1 e sai do loop
@@ -120,6 +121,8 @@ public class Main {
                 if (c == 10 || c == ' ') {
                     // remove o ultimo caractere, que seria o delimitador, para depois comparar nos IFS
                     lexema = lexema.substring(0, lexema.length() - 1);
+                    if (c == 10)
+                        contadorLinha++;
 
 
 //                     verificar o que corresponde ao lexema encontrado
@@ -144,20 +147,23 @@ public class Main {
                     } else if (lexema.matches("se")) {
                         System.out.printf("tk_se encontrado");
                         lexema = "";
-                        outputStream.write("tk_se");
+                        outputStream.write("tk_se ");
                     } else if (lexema.matches("fimse")) {
                         System.out.println("tk_fimse encontrado");
                         lexema = "";
                         outputStream.write("tk_fimse ");
                     } else if (lexema.matches("\".*\"")) {
+                        tabelaSimbolos.put("tk_texto", lexema);
                         System.out.println("tk_texto encontrado");
                         lexema = "";
                         outputStream.write("tk_texto ");
                     } else if (lexema.matches("[a-z][a-z0-9]*")) {
+                        tabelaSimbolos.put("tk_id", lexema);
                         System.out.println("tk_id encontrado");
                         lexema = "";
                         outputStream.write("tk_id ");
                     } else if (lexema.matches("[0-9]+(,[0-9]+)?")) {
+                        tabelaSimbolos.put("tk_numero", lexema);
                         System.out.println("tk_numero encontrado");
                         lexema = "";
                         outputStream.write("tk_numero ");
@@ -174,6 +180,10 @@ public class Main {
                         lexema = "";
                         outputStream.write("tk_relop ");
 
+                    } else {
+                        System.out.println("tk_invalido encontrado");
+                        lexema = "";
+                        outputStream.write("tk_invalido ");
                     }
                 }
 
@@ -187,6 +197,20 @@ public class Main {
 
             // escreve o ultimo lexema
             outputStream.write(lexemaExiste(lexema));
+
+            Set set = tabelaSimbolos.entrySet();
+            Iterator i = set.iterator();
+
+            System.out.printf("");
+            System.out.println("Tabela de símbolos");
+            System.out.println("Chave : Valor");
+            while (i.hasNext()) {
+
+                Map.Entry me = (Map.Entry) i.next();
+                System.out.print(me.getKey() + " : ");
+                System.out.println(me.getValue());
+
+            }
 
         } finally {
             if (inputStream != null) {
