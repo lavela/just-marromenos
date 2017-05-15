@@ -103,12 +103,15 @@ public class Main {
 
             // vai indicar quando uma string for aberta, contornando o problema dos delimitadores
             boolean abreString = false;
+
+            // contador de linha
             int contadorLinha = 0;
+            int contadorCaractere = 0;
 
 
             // enquanto quando o metodo alcanca o fim do stream ele retorna -1 e sai do loop
             while ((c = inputStream.read()) != -1) {
-
+                contadorCaractere++;
                 // concactena os caracteres numa string até que nao tenha mais nenhum caractere
                 lexema += (char) c;
 
@@ -116,14 +119,17 @@ public class Main {
                 System.out.println("lexema -> '" + lexema + "'");
 //                System.out.println((char) c + " (" + c + ")");
 
+                if ((char) c == '"') {
+                    abreString = !abreString;
+                }
+
                 // delimitadores, 10 = quebra de linha e espaco
                 // ao encontrar um desses dois caracteres, a condicao vai verificar o lexema, removendo o caractere
-                if (c == 10 || c == ' ') {
+                if (c == 10 || c == ' ' && !abreString) {
                     // remove o ultimo caractere, que seria o delimitador, para depois comparar nos IFS
                     lexema = lexema.substring(0, lexema.length() - 1);
                     if (c == 10)
                         contadorLinha++;
-
 
 //                     verificar o que corresponde ao lexema encontrado
                     if (lexema.equals("escreva")) {
@@ -182,6 +188,7 @@ public class Main {
 
                     } else {
                         System.out.println("tk_invalido encontrado");
+                        System.out.printf("erro na linha %s e coluna %s\n", contadorLinha, contadorCaractere);
                         lexema = "";
                         outputStream.write("tk_invalido ");
                     }
@@ -190,7 +197,6 @@ public class Main {
                 // funcao que passa o lexema e verifica
 
 //                System.out.println("ultimo lexema: " + lexemaExiste(lexema));
-
 
 
             }
@@ -211,6 +217,9 @@ public class Main {
                 System.out.println(me.getValue());
 
             }
+
+            System.out.println("Número de linhas: " + (contadorLinha + 1));
+            System.out.println("Número de caracteres: "+ (contadorCaractere + 1));
 
         } finally {
             if (inputStream != null) {

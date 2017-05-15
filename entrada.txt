@@ -2,7 +2,7 @@ inicio
 escreva "texto"
 variavel = 1 + 1
 se variavel > 1
-escreva "teste"
+escreva "tes te"
 fimse
 variavel2 = variavel
 leia variavel
