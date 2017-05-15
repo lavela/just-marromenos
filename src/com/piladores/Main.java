@@ -134,19 +134,23 @@ public class Main {
 //                     verificar o que corresponde ao lexema encontrado
                     if (lexema.equals("escreva")) {
                         System.out.println("tk_escreva encontrado");
+                        listaDeSimbolos.add("tk_escreva");
                         //limpa a string, pra concatenar a partir de uma string vazia
                         lexema = "";
                         // escreve no arquivo de saida.txt
                         outputStream.write("tk_escreva ");
                     } else if (lexema.equals("leia")) {
+                        listaDeSimbolos.add("tk_leia");
                         System.out.println("tk_leia encontrado");
                         lexema = "";
                         outputStream.write("tk_leia ");
                     } else if (lexema.matches("inicio")) {
+                        listaDeSimbolos.add("tk_inicio");
                         System.out.println("tk_inicio encontrado");
                         lexema = "";
                         outputStream.write("tk_inicio ");
                     } else if (lexema.matches("fim")) {
+                        listaDeSimbolos.add("tk_fim");
                         System.out.println("tk_fim encontrado");
                         lexema = "";
                         outputStream.write("tk_fim");
@@ -155,33 +159,40 @@ public class Main {
                         lexema = "";
                         outputStream.write("tk_se ");
                     } else if (lexema.matches("fimse")) {
+                        listaDeSimbolos.add("tk_fimse");
                         System.out.println("tk_fimse encontrado");
                         lexema = "";
                         outputStream.write("tk_fimse ");
                     } else if (lexema.matches("\".*\"")) {
+                        listaDeSimbolos.add("tk_texto");
                         tabelaSimbolos.put("tk_texto", lexema);
                         System.out.println("tk_texto encontrado");
                         lexema = "";
                         outputStream.write("tk_texto ");
                     } else if (lexema.matches("[a-z][a-z0-9]*")) {
+                        listaDeSimbolos.add("tk_id");
                         tabelaSimbolos.put("tk_id", lexema);
                         System.out.println("tk_id encontrado");
                         lexema = "";
                         outputStream.write("tk_id ");
                     } else if (lexema.matches("[0-9]+(,[0-9]+)?")) {
+                        listaDeSimbolos.add("tk_numero");
                         tabelaSimbolos.put("tk_numero", lexema);
                         System.out.println("tk_numero encontrado");
                         lexema = "";
                         outputStream.write("tk_numero ");
                     } else if (lexema.matches("\\+|\\-|\\*|/")) {
+                        listaDeSimbolos.add("tk_operador");
                         System.out.println("tk_operador encontrado");
                         lexema = "";
                         outputStream.write("tk_operador ");
                     } else if (lexema.matches("=")) {
+                        listaDeSimbolos.add("tk_atribuicao");
                         System.out.println("tk_atribuicao encontrado");
                         lexema = "";
                         outputStream.write("tk_atribuicao ");
                     } else if (lexema.matches(">|<|>=|<=|==|!=")) {
+                        listaDeSimbolos.add("tk_relop");
                         System.out.println("tk_relop encontrado");
                         lexema = "";
                         outputStream.write("tk_relop ");
@@ -217,6 +228,8 @@ public class Main {
                 System.out.println(me.getValue());
 
             }
+
+            System.out.println("Lista de símbolos: " + listaDeSimbolos);
 
             System.out.println("Número de linhas: " + (contadorLinha + 1));
             System.out.println("Número de caracteres: "+ (contadorCaractere + 1));
