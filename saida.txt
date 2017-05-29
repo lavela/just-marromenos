@@ -1,0 +1,1 @@
+tk_inicio tk_escreva tk_texto tk_id tk_atribuicao tk_numero tk_operador tk_numero tk_se tk_id tk_relop tk_numero tk_escreva tk_texto tk_fimse tk_id tk_atribuicao tk_id tk_leia tk_id tk_invalido tk_fim
