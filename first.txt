@@ -1,0 +1,11 @@
+FIRST(programa) 	= {tk_leia, tk_escreva, tk_id, tk_se}
+FIRST(comando)		= {tk_leia, tk_escreva, tk_id, tk_se}
+FIRST(entrada)		= {tk_leia}
+FIRST(saida)		= {tk_escreva}
+FIRST(dado)			= {tk_texto, tk_numero, tk_id}
+FIRST(atribuicao)	= {tk_id}
+FIRST(expressao)	= {tk_id, tk_numero}
+FIRST(valor)		= {tk_id, tk_numero}
+FIRST(condicional)	= {tk_se}
+FIRST(condicao)		= {tk_id, tk_numero}
+
